@@ -16,23 +16,21 @@ export default class Gestures extends React.Component {
 
     return (
       <View style={{ flex: 1 }}>
+        <GravityArea />
         <PanGestureHandler
           onGestureEvent={Animated.event(
             [{ nativeEvent: { translationX: panX, translationY: panY } }],
             { useNativeDriver: true }
           )}
           onHandlerStateChange={this._handlePanGestureStateChange}>
-          <Animated.View style={StyleSheet.absoluteFill}>
-            <GravityArea />
-            <Animated.View
-              style={[
-                styles.box,
-                {
-                  transform: [{ translateX: panX }, { translateY: panY }],
-                },
-              ]}
-            />
-          </Animated.View>
+          <Animated.View
+            style={[
+              styles.box,
+              {
+                transform: [{ translateX: panX }, { translateY: panY }],
+              },
+            ]}
+          />
         </PanGestureHandler>
 
         <View
@@ -73,14 +71,14 @@ export default class Gestures extends React.Component {
   // State.END - gesture has completed
   _handlePanGestureStateChange = e => {
     console.log(e.nativeEvent);
-    const { oldState, x, y } = e.nativeEvent;
+    const { oldState, absoluteX, absoluteY } = e.nativeEvent;
 
     if (oldState === State.ACTIVE) {
       // This adds the value to the current offset, then sets the value to 0
       this.panX.extractOffset();
       this.panY.extractOffset();
 
-      if (x < 200 && y < 200) {
+      if (absoluteX < 200 && absoluteY < 200) {
         this.panX.flattenOffset();
         this.panY.flattenOffset();
         Animated.spring(this.panX, {
