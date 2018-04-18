@@ -11,13 +11,17 @@ import {
 import { VictoryChart, VictoryLine, VictoryTheme } from 'victory-native';
 import clamp from 'clamp';
 
+console.disableYellowBox = true;
+
 const Button = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={{ paddingTop: 5 }}>
     <Text style={{ fontSize: 14, color: '#888' }}>{title}</Text>
   </TouchableOpacity>
 );
 
-console.disableYellowBox = true;
+const FRAMES_TO_DISPLAY = 90;
+const DURATION = FRAMES_TO_DISPLAY * 16.67;
+const USE_NATIVE_DRIVER = false;
 
 export default class App extends React.Component {
   progress = new Animated.Value(0);
@@ -84,14 +88,14 @@ export default class App extends React.Component {
           <View style={{ flex: 1, marginTop: -40 }}>
             <VictoryChart
               theme={VictoryTheme.material}
-              width={300}
+              width={350}
               height={275}>
               <VictoryLine
                 style={{
                   data: { stroke: '#c43a31' },
                   parent: { border: '1px solid #ccc' },
                 }}
-                domain={{ x: [0, 70], y: [0, 1.5] }}
+                domain={{ x: [0, FRAMES_TO_DISPLAY], y: [0, 1.5] }}
                 data={this.state.values}
               />
             </VictoryChart>
@@ -114,6 +118,7 @@ export default class App extends React.Component {
               title="Bouncey spring"
               onPress={this._bounceySpringAnimation}
             />
+            <Button title="Block JS" onPress={this._blockJS} />
             {this.state.showFrames ? (
               <Button title="Hide frames" onPress={this._hideFrames} />
             ) : (
@@ -124,6 +129,14 @@ export default class App extends React.Component {
         <StatusBar hidden />
       </View>
     );
+  }
+
+  _blockJS = () => {
+    let start = new Date();
+    let end = new Date();
+    while(end - start < 1000) {
+      end = new Date();
+    }
   }
 
   _resetState = () => {
@@ -138,7 +151,8 @@ export default class App extends React.Component {
     Animated.timing(this.progress, {
       toValue: 1,
       easing: Easing.linear,
-      duration: 1000,
+      duration: DURATION,
+      useNativeDriver: USE_NATIVE_DRIVER,
     }).start();
   };
 
@@ -147,7 +161,8 @@ export default class App extends React.Component {
     Animated.timing(this.progress, {
       toValue: 1,
       easing: Easing.inOut(Easing.quad),
-      duration: 1000,
+      duration: DURATION,
+      useNativeDriver: USE_NATIVE_DRIVER,
     }).start();
   };
 
@@ -156,7 +171,8 @@ export default class App extends React.Component {
     Animated.timing(this.progress, {
       toValue: 1,
       easing: Easing.in(Easing.bounce),
-      duration: 1000,
+      duration: DURATION,
+      useNativeDriver: USE_NATIVE_DRIVER,
     }).start();
   }
 
@@ -164,6 +180,7 @@ export default class App extends React.Component {
     await this._resetState();
     Animated.spring(this.progress, {
       toValue: 1,
+      useNativeDriver: USE_NATIVE_DRIVER,
     }).start();
   };
 
@@ -172,6 +189,7 @@ export default class App extends React.Component {
     Animated.spring(this.progress, {
       toValue: 1,
       bounciness: 20,
+      useNativeDriver: USE_NATIVE_DRIVER,
     }).start();
   };
 }
