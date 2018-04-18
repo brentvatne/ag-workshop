@@ -109,10 +109,7 @@ export default class App extends React.Component {
               title="Ease in out quad"
               onPress={this._inOutQuadAnimation}
             />
-            <Button
-              title="Ease in bounce"
-              onPress={this._inBounceAnimation}
-            />
+            <Button title="Ease in bounce" onPress={this._inBounceAnimation} />
             <Button title="Spring" onPress={this._springAnimation} />
             <Button
               title="Bouncey spring"
@@ -134,10 +131,10 @@ export default class App extends React.Component {
   _blockJS = () => {
     let start = new Date();
     let end = new Date();
-    while(end - start < 1000) {
+    while (end - start < 1000) {
       end = new Date();
     }
-  }
+  };
 
   _resetState = () => {
     return new Promise(resolve => {
@@ -174,14 +171,11 @@ export default class App extends React.Component {
       duration: DURATION,
       useNativeDriver: USE_NATIVE_DRIVER,
     }).start();
-  }
+  };
 
   _springAnimation = async () => {
     await this._resetState();
-    Animated.spring(this.progress, {
-      toValue: 1,
-      useNativeDriver: USE_NATIVE_DRIVER,
-    }).start();
+    Animated.spring(this.progress, { toValue: 1 }).start();
   };
 
   _bounceySpringAnimation = async () => {
