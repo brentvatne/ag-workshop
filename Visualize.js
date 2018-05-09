@@ -21,7 +21,7 @@ const Button = ({ onPress, title }) => (
 
 const FRAMES_TO_DISPLAY = 90;
 const DURATION = FRAMES_TO_DISPLAY * 16.67;
-const USE_NATIVE_DRIVER = false;
+const USE_NATIVE_DRIVER = true;
 
 export default class App extends React.Component {
   progress = new Animated.Value(0);

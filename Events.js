@@ -42,7 +42,7 @@ export default class Events extends React.Component {
   _blockJS = () => {
     let start = new Date();
     let end = new Date();
-    while (end - start < 3000) {
+    while (end - start < 10000) {
       end = new Date();
     }
   };
